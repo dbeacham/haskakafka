@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Haskakafka.InternalTypes where
+module Haskakafka.Internal.Types where
 
 import           Control.Exception
 import           Data.Int
