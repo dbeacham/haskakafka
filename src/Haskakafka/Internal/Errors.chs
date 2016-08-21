@@ -14,7 +14,6 @@ module Haskakafka.Internal.Errors
 
 import Foreign (Ptr)
 import Foreign.C.Types (CSize)
-import Haskakafka.Internal.CTypes (RdKafkaErrDesc(..), RdKafkaErrDescPtr)
 
 #include "librdkafka/rdkafka.h"
 

@@ -30,6 +30,16 @@ module Haskakafka.Internal.CTypes
   , RdKafkaTimestampTypeT(..)
   , RdKafkaTimestampTypeTPtr
 
+  -- * Metadata
+  , RdKafkaMetadataT(..)
+  , RdKafkaMetadataTPtr
+  , RdKafkaMetadataBrokerT(..)
+  , RdKafkaMetadataBrokerTPtr
+  , RdKafkaMetadataTopicT(..)
+  , RdKafkaMetadataTopicTPtr
+  , RdKafkaMetadataPartitionT(..)
+  , RdKafkaMetadataPartitionTPtr
+
   -- * Topic
   , RdKafkaTopicT
   , RdKafkaTopicTPtr
@@ -37,6 +47,10 @@ module Haskakafka.Internal.CTypes
   -- * Topic partition
   , RdKafkaTopicPartitionT
   , RdKafkaTopicPartitionTPtr
+
+  -- * Topic partition list
+  , RdKafkaTopicPartitionListT
+  , RdKafkaTopicPartitionListTPtr
 
   -- * Errors
   , RdKafkaErrDesc(..)
@@ -51,9 +65,9 @@ module Haskakafka.Internal.CTypes
 
 import Control.Monad (liftM)
 import Data.Word (Word8)
-import Foreign.C.Types (CSize, CFile)
+import Foreign.C.Types (CSize, CFile, CInt)
 import Foreign.C.String (CString)
-import Foreign (Ptr, Storable, castPtr, Int64)
+import Foreign (Ptr, Storable, peek, poke, castPtr, Int64)
 
 #include "librdkafka/rdkafka.h"
 
@@ -61,23 +75,27 @@ import Foreign (Ptr, Storable, castPtr, Int64)
 data RdKafkaT
 {#pointer *rd_kafka_t
   as RdKafkaTPtr
+  foreign
   -> `RdKafkaT' #}
 
 -- Configuration
 data RdKafkaConfT
 {#pointer *rd_kafka_conf_t
   as RdKafkaConfTPtr
+  foreign
   -> `RdKafkaConfT' #}
 
 data RdKafkaTopicConfT
 {#pointer *rd_kafka_topic_conf_t
   as RdKafkaTopicConfTPtr
+  foreign
   -> `RdKafkaTopicConfT' #}
 
 -- Queue
 data RdKafkaQueueT
 {#pointer *rd_kafka_queue_t
   as RdKafkaQueueTPtr
+  foreign
   -> `RdKafkaQueueT' #}
 
 -- Topic
@@ -85,6 +103,107 @@ data RdKafkaTopicT
 {#pointer *rd_kafka_topic_t
   as RdKafkaTopicTPtr foreign
   -> RdKafkaTopicT #}
+
+-- Metadata
+data RdKafkaMetadataBrokerT = RdKafkaMetadataBrokerT
+  { id'RdKafkaMetadataBrokerT  :: Int
+  , host'RdKafkaMetadataBrokerT :: CString
+  , port'RdKafkaMetadataBrokerT :: Int
+  } deriving (Show, Eq)
+
+{#pointer
+    *rd_kafka_metadata_broker_t
+  as RdKafkaMetadataBrokerTPtr
+  -> RdKafkaMetadataBrokerT #}
+
+instance Storable RdKafkaMetadataBrokerT where
+  sizeOf    _ = {#sizeof rd_kafka_metadata_broker_t  #}
+  alignment _ = {#alignof rd_kafka_metadata_broker_t #}
+
+  peek p = RdKafkaMetadataBrokerT
+    <$> liftM fromIntegral ({#get rd_kafka_metadata_broker_t->id   #} p)
+    <*> liftM id           ({#get rd_kafka_metadata_broker_t->host #} p)
+    <*> liftM fromIntegral ({#get rd_kafka_metadata_broker_t->port #} p)
+
+  poke = undefined
+
+data RdKafkaMetadataPartitionT = RdKafkaMetadataPartitionT
+  { id'RdKafkaMetadataPartitionT         :: Int
+  , err'RdKafkaMetadataPartitionT        :: RdKafkaRespErrT
+  , leader'RdKafkaMetadataPartitionT     :: Int
+  , replicaCnt'RdKafkaMetadataPartitionT :: Int
+  , replicas'RdKafkaMetadataPartitionT   :: Ptr CInt32T
+  , isrCnt'RdKafkaMetadataPartitionT     :: Int
+  , isrs'RdKafkaMetadataPartitionT       :: Ptr CInt32T
+  } deriving (Show, Eq)
+
+{#pointer *rd_kafka_metadata_partition_t
+  as RdKafkaMetadataPartitionTPtr
+  -> RdKafkaMetadataPartitionT #}
+
+instance Storable RdKafkaMetadataPartitionT where
+  sizeOf    _ = {#sizeof  rd_kafka_metadata_partition_t #}
+  alignment _ = {#alignof rd_kafka_metadata_partition_t #}
+
+  peek p = RdKafkaMetadataPartitionT
+    <$> liftM fromIntegral            ({#get rd_kafka_metadata_partition_t->id          #} p)
+    <*> liftM (toEnum . fromIntegral) ({#get rd_kafka_metadata_partition_t->err         #} p)
+    <*> liftM fromIntegral            ({#get rd_kafka_metadata_partition_t->leader      #} p)
+    <*> liftM fromIntegral            ({#get rd_kafka_metadata_partition_t->replica_cnt #} p)
+    <*> liftM castPtr                 ({#get rd_kafka_metadata_partition_t->replicas    #} p)
+    <*> liftM fromIntegral            ({#get rd_kafka_metadata_partition_t->isr_cnt     #} p)
+    <*> liftM castPtr                 ({#get rd_kafka_metadata_partition_t->isrs        #} p)
+
+  poke = undefined
+
+data RdKafkaMetadataTopicT = RdKafkaMetadataTopicT
+  { topic'RdKafkaMetadataTopicT        :: CString
+  , partitionCnt'RdKafkaMetadataTopicT :: Int
+  , partitions'RdKafkaMetadataTopicT   :: Ptr RdKafkaMetadataPartitionT
+  , err'RdKafkaMetadataTopicT          :: RdKafkaRespErrT
+  } deriving (Show, Eq)
+
+{#pointer *rd_kafka_metadata_topic_t
+  as RdKafkaMetadataTopicTPtr
+  -> RdKafkaMetadataTopicT #}
+
+instance Storable RdKafkaMetadataTopicT where
+  sizeOf    _ = {#sizeof  rd_kafka_metadata_topic_t #}
+  alignment _ = {#alignof rd_kafka_metadata_topic_t #}
+
+  peek p = RdKafkaMetadataTopicT
+    <$> liftM id                      ({#get rd_kafka_metadata_topic_t->topic         #} p)
+    <*> liftM fromIntegral            ({#get rd_kafka_metadata_topic_t->partition_cnt #} p)
+    <*> liftM castPtr                 ({#get rd_kafka_metadata_topic_t->partitions    #} p)
+    <*> liftM (toEnum . fromIntegral) ({#get rd_kafka_metadata_topic_t->err           #} p)
+
+  poke = undefined
+
+data RdKafkaMetadataT = RdKafkaMetadataT
+  { brokerCnt'RdKafkaMetadataT    :: Int
+  , brokers'RdKafkaMetadataT      :: RdKafkaMetadataBrokerTPtr
+  , topicCnt'RdKafkaMetadataT     :: Int
+  , topics'RdKafkaMetadataT       :: RdKafkaMetadataTopicTPtr
+  , origBrokerId'RdKafkaMetadataT :: CInt32T
+  } deriving (Show, Eq)
+
+{#pointer *rd_kafka_metadata_t
+  as RdKafkaMetadataTPtr
+  foreign
+  -> RdKafkaMetadataT #}
+
+instance Storable RdKafkaMetadataT where
+  sizeOf    _ = {#sizeof  rd_kafka_metadata_t #}
+  alignment _ = {#alignof rd_kafka_metadata_t #}
+
+  peek p = RdKafkaMetadataT
+    <$> liftM fromIntegral ({#get rd_kafka_metadata_t->broker_cnt     #} p)
+    <*> liftM castPtr      ({#get rd_kafka_metadata_t->brokers        #} p)
+    <*> liftM fromIntegral ({#get rd_kafka_metadata_t->topic_cnt      #} p)
+    <*> liftM castPtr      ({#get rd_kafka_metadata_t->topics         #} p)
+    <*> liftM fromIntegral ({#get rd_kafka_metadata_t->orig_broker_id #} p)
+
+  poke = undefined
 
 -- Topic partition
 data RdKafkaTopicPartitionT = RdKafkaTopicPartitionT
@@ -123,6 +242,32 @@ instance Storable RdKafkaTopicPartitionT where
   as RdKafkaTopicPartitionTPtr foreign
   -> RdKafkaTopicPartitionT #}
 
+-- Topic partition lists
+data RdKafkaTopicPartitionListT = RdKafkaTopicPartitionListT
+  { cnt'RdKafkaTopicPartitionListT   :: Int
+  , size'RdKafkaTopicPartitionListT  :: Int
+  , elems'RdKafkaTopicPartitionListT :: Ptr RdKafkaTopicPartitionT
+  } deriving (Show, Eq)
+
+{#pointer *rd_kafka_topic_partition_list_t
+  as RdKafkaTopicPartitionListTPtr
+  foreign
+  -> RdKafkaTopicPartitionListT #}
+
+instance Storable RdKafkaTopicPartitionListT where
+  sizeOf    _ = {#sizeof  rd_kafka_topic_partition_list_t #}
+  alignment _ = {#alignof rd_kafka_topic_partition_list_t #}
+
+  peek p = RdKafkaTopicPartitionListT
+    <$> liftM fromIntegral ({#get rd_kafka_topic_partition_list_t->cnt   #} p)
+    <*> liftM fromIntegral ({#get rd_kafka_topic_partition_list_t->size  #} p)
+    <*> liftM castPtr      ({#get rd_kafka_topic_partition_list_t->elems #} p)
+
+  poke p x = do
+    {#set rd_kafka_topic_partition_list_t.cnt   #} p (fromIntegral $ cnt'RdKafkaTopicPartitionListT x)
+    {#set rd_kafka_topic_partition_list_t.size  #} p (fromIntegral $ size'RdKafkaTopicPartitionListT x)
+    {#set rd_kafka_topic_partition_list_t.elems #} p (castPtr      $ elems'RdKafkaTopicPartitionListT x)
+
 -- Type hooks
 type CInt64T = {#type int64_t #}
 type CInt32T = {#type int32_t #}
@@ -142,6 +287,17 @@ type CInt32T = {#type int32_t #}
 {#enum rd_kafka_resp_err_t
   as ^ {underscoreToCase}
   deriving (Show, Eq) #}
+
+instance Storable RdKafkaRespErrT where
+  sizeOf    _ = {#sizeof rd_kafka_resp_err_t #}
+  alignment _ = {#alignof rd_kafka_resp_err_t #}
+
+  peek p = do
+    cInt <- peek (castPtr p) :: IO CInt
+    return . toEnum . fromIntegral $ cInt
+
+  poke p x = let cInt = (fromIntegral . fromEnum) x :: CInt
+             in poke (castPtr p) cInt
 
 {#enum rd_kafka_timestamp_type_t
   as ^ {underscoreToCase}

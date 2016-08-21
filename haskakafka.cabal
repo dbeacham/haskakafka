@@ -26,15 +26,18 @@ library
                      , unix
   exposed-modules:
     --Haskakafka
-    Haskakafka.Internal.Examples
+    --Haskakafka.Internal.Examples
     Haskakafka.Internal.CTypes
     Haskakafka.Internal.Version
     Haskakafka.Internal.Configuration
     Haskakafka.Internal.Kafka
-    Haskakafka.Internal.Queue
+    --Haskakafka.Internal.Queue
     Haskakafka.Internal.Message
     Haskakafka.Internal.Topic
     Haskakafka.Internal.Errors
+    Haskakafka.Internal.TopicPartitionList
+    Haskakafka.Internal.Metadata
+    Haskakafka.Internal.HighLevelConsumer
     --Haskakafka.InternalRdKafkaEnum
     --Haskakafka.InternalRdKafka
     --Haskakafka.InternalSetup

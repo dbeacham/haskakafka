@@ -1,5 +1,3 @@
-{-# LANGUAGE EmptyDataDecls #-}
-
 -- | Message queues allows the application to re-route consumed messages from
 -- multiple topics and partitions into one single queue point. This queue point
 -- containing messages from a number of topic and partitions may then be served
@@ -23,6 +21,7 @@ import Foreign (Ptr, FunPtr)
 {#fun unsafe rd_kafka_queue_new
     as ^
     { `RdKafkaTPtr'
+    -- ^ Kafka object pointer
     } -> `RdKafkaQueueTPtr' #}
 
 -- | Destroy Kafka queue object.

@@ -15,6 +15,8 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_version_str`
 
 ## Errors
+Depends: @RdKafkaRespErrT@
+
 - [X] `rd_kafka_get_err_descs`
 
 - [X] `rd_kafka_get_debug_contexts`
@@ -22,6 +24,7 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_err2name`
 
 ## Configuration
+Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 
 ### Global
 - [X] `rd_kafka_conf_new`
@@ -32,18 +35,18 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_conf_set_default_topic_conf`
 - [X] `rd_kafka_conf_get`
 
-- [ ] `rd_kafka_conf_set_opaque`
-- [ ] `rd_kafka_conf_set_dr_cb`
-- [ ] `rd_kafka_conf_set_dr_msg_cb`
-- [ ] `rd_kafka_conf_set_consume_cb`
-- [ ] `rd_kafka_conf_set_rebalance_cb`
-- [ ] `rd_kafka_conf_set_offset_commit_cb`
-- [ ] `rd_kafka_conf_set_error_cb`
-- [ ] `rd_kafka_conf_set_throttle_cb`
-- [ ] `rd_kafka_conf_set_log_cb`
-- [ ] `rd_kafka_conf_set_stats_cb`
-- [ ] `rd_kafka_conf_set_socket_cb`
-- [ ] `rd_kafka_conf_set_open_cb`
+- [X] `rd_kafka_conf_set_opaque`
+- [ ] `rd_kafka_conf_set_dr_cb` (Deprecated)
+- [X] `rd_kafka_conf_set_dr_msg_cb`
+- [X] `rd_kafka_conf_set_consume_cb`
+- [X] `rd_kafka_conf_set_rebalance_cb`
+- [X] `rd_kafka_conf_set_offset_commit_cb`
+- [X] `rd_kafka_conf_set_error_cb`
+- [X] `rd_kafka_conf_set_throttle_cb`
+- [X] `rd_kafka_conf_set_log_cb`
+- [X] `rd_kafka_conf_set_stats_cb`
+- [X] `rd_kafka_conf_set_socket_cb`
+- [X] `rd_kafka_conf_set_open_cb`
 
 ### Topic
 - [X] `rd_kafka_topic_conf_new`
@@ -51,24 +54,24 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_topic_conf_destroy`
 - [X] `rd_kafka_topic_conf_set`
 
-- [ ] `rd_kafka_topic_conf_set_opaque`
-- [ ] `rd_kafka_topic_conf_get`
+- [X] `rd_kafka_topic_conf_set_opaque`
+- [X] `rd_kafka_topic_conf_get`
 
 ### Partitioning
-- [ ] `rd_kafka_topic_conf_set_partitioner_cb`
-- [ ] `rd_kafka_topic_partition_available` (Must be called within partioning function)
-- [ ] `rd_kafka_msg_partitioner_random`
-- [ ] `rd_kafka_msg_partitioner_consistent`
-- [ ] `rd_kafka_msg_partitioner_consistent_random`
+- [X] `rd_kafka_topic_conf_set_partitioner_cb`
+- [X] `rd_kafka_topic_partition_available` (Must be called within partioning function)
+- [X] `rd_kafka_msg_partitioner_random`
+- [X] `rd_kafka_msg_partitioner_consistent`
+- [X] `rd_kafka_msg_partitioner_consistent_random`
 
 ### Logging
 - [X] `rd_kafka_set_log_level`
 
 ### Display
-- [ ] `rd_kafka_conf_dump`
-- [ ] `rd_kafka_topic_conf_dump`
-- [ ] `rd_kafka_conf_dump_free`
-- [ ] `rd_kafka_conf_properties_show`
+- [X] `rd_kafka_conf_dump`
+- [X] `rd_kafka_topic_conf_dump`
+- [X] `rd_kafka_conf_dump_free`
+- [X] `rd_kafka_conf_properties_show`
 
 ## Topic
 - [X] `rd_kafka_topic_new`
@@ -77,15 +80,15 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_topic_opaque`
 
 ## Topic partition
-- [ ] `rd_kafka_topic_partition_list_new`
-- [ ] `rd_kafka_topic_partition_list_destroy`
-- [ ] `rd_kafka_topic_partition_list_add`
-- [ ] `rd_kafka_topic_partition_list_add_range`
-- [ ] `rd_kafka_topic_partition_list_del`
-- [ ] `rd_kafka_topic_partition_list_del_by_idx`
-- [ ] `rd_kafka_topic_partition_list_copy`
-- [ ] `rd_kafka_topic_partition_list_set_offset`
-- [ ] `rd_kafka_topic_partition_list_find`
+- [X] `rd_kafka_topic_partition_list_new`
+- [X] `rd_kafka_topic_partition_list_destroy`
+- [X] `rd_kafka_topic_partition_list_add`
+- [X] `rd_kafka_topic_partition_list_add_range`
+- [X] `rd_kafka_topic_partition_list_del`
+- [X] `rd_kafka_topic_partition_list_del_by_idx`
+- [X] `rd_kafka_topic_partition_list_copy`
+- [X] `rd_kafka_topic_partition_list_set_offset`
+- [X] `rd_kafka_topic_partition_list_find`
 
 ## Kafka
 - [X] `rd_kafka_new`
@@ -126,21 +129,21 @@ Original [README](README.orig.md).
 - [ ] `rd_kafka_offset_store`
 
 ## High level consumer API
-- [ ] `rd_kafka_subscribe`
-- [ ] `rd_kafka_unsubscribe`
-- [ ] `rd_kafka_subscription`
-- [ ] `rd_kafka_consumer_poll`
-- [ ] `rd_kafka_consumer_close`
-- [ ] `rd_kafka_assign`
-- [ ] `rd_kafka_assignment`
-- [ ] `rd_kafka_commit`
-- [ ] `rd_kafka_commit_message`
-- [ ] `rd_kafka_committed`
-- [ ] `rd_kafka_position`
+- [X] `rd_kafka_subscribe`
+- [X] `rd_kafka_unsubscribe`
+- [X] `rd_kafka_subscription`
+- [X] `rd_kafka_consumer_poll`
+- [X] `rd_kafka_consumer_close`
+- [X] `rd_kafka_assign`
+- [X] `rd_kafka_assignment`
+- [X] `rd_kafka_commit`
+- [X] `rd_kafka_commit_message`
+- [X] `rd_kafka_committed`
+- [X] `rd_kafka_position`
 
 ## Metadata
-- [ ] `rd_kafka_metadata`
-- [ ] `rd_kafka_metadata_destroy`
+- [X] `rd_kafka_metadata`
+- [X] `rd_kafka_metadata_destroy`
 
 ## Producer API
 - [ ] `rd_kafka_produce`
