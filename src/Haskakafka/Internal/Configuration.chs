@@ -46,6 +46,9 @@ module Haskakafka.Internal.Configuration
   , rdKafkaTopicConfDump
   , rdKafkaConfDumpFree
   , rdKafkaConfPropertiesShow
+
+  -- * Logging
+  , rdKafkaSetLogLevel
   ) where
 
 import Foreign (Ptr, FunPtr)
@@ -174,3 +177,13 @@ foreign import ccall unsafe "rdkafka.h &rd_kafka_topic_conf_destroy"
 {#fun unsafe rd_kafka_conf_properties_show as ^
     { `CFilePtr' 
     } -> `()' #}
+
+-- | Specify the maximum logging level produced by internal Kafka logging and
+-- debugging.
+{#fun unsafe rd_kafka_set_log_level
+  as ^
+  { `RdKafkaTPtr'
+  -- ^ pointer to Kafka object
+  , `Int'
+  -- ^ maximum log level
+  } -> `()' #}

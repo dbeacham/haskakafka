@@ -24,10 +24,10 @@ module Haskakafka.Internal.CTypes
   , RdKafkaMessageTPtr
 
   -- * Enumerations
-  , RdKafkaTypeT
-  , RdKafkaConfResT
-  , RdKafkaRespErrT
-  , RdKafkaTimestampTypeT
+  , RdKafkaTypeT(..)
+  , RdKafkaConfResT(..)
+  , RdKafkaRespErrT(..)
+  , RdKafkaTimestampTypeT(..)
   , RdKafkaTimestampTypeTPtr
 
   -- * Topic
@@ -39,7 +39,7 @@ module Haskakafka.Internal.CTypes
   , RdKafkaTopicPartitionTPtr
 
   -- * Errors
-  , RdKafkaErrDesc
+  , RdKafkaErrDesc(..)
   , RdKafkaErrDescPtr
 
   -- * Hooks
