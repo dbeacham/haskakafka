@@ -38,6 +38,9 @@ library
     Haskakafka.Internal.TopicPartitionList
     Haskakafka.Internal.Metadata
     Haskakafka.Internal.HighLevelConsumer
+    Haskakafka.Internal.Producer
+    Haskakafka.Internal.SimpleError
+    Haskakafka.Internal.SimpleConsumer
     --Haskakafka.InternalRdKafkaEnum
     --Haskakafka.InternalRdKafka
     --Haskakafka.InternalSetup

@@ -1,5 +1,3 @@
-{-# LANGUAGE EmptyDataDecls #-}
-
 module Haskakafka.Internal.Configuration
   (
   -- * Global configuration

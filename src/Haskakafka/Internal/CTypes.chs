@@ -56,9 +56,15 @@ module Haskakafka.Internal.CTypes
   , RdKafkaErrDesc(..)
   , RdKafkaErrDescPtr
 
+  -- * Group lists
+  , RdKafkaGroupListT(..)
+  , RdKafkaGroupInfoT(..)
+  , RdKafkaGroupMemberInfoT(..)
+
   -- * Hooks
   , CInt32T
   , CInt64T
+  , CSSizeT
   , CSizePtr
   , CFilePtr
   ) where
@@ -271,6 +277,7 @@ instance Storable RdKafkaTopicPartitionListT where
 -- Type hooks
 type CInt64T = {#type int64_t #}
 type CInt32T = {#type int32_t #}
+type CSSizeT = {#type ssize_t #}
 
 {#pointer *FILE as CFilePtr -> CFile #}
 {#pointer *size_t as CSizePtr -> CSize #}
@@ -350,6 +357,88 @@ instance Storable RdKafkaMessageT where
 {#pointer *rd_kafka_message_t
   as RdKafkaMessageTPtr
   -> `RdKafkaMessageT' #}
+
+-- Group lists
+data RdKafkaGroupListT = RdKafkaGroupListT
+  { groups'RdKafkaGroupListT   :: Ptr RdKafkaGroupInfoT
+  , groupCnt'RdKafkaGroupListT :: Int }
+
+instance Storable RdKafkaGroupListT where
+  sizeOf    _ = {#sizeof  rd_kafka_group_list #}
+  alignment _ = {#alignof rd_kafka_group_list #}
+
+  peek p = RdKafkaGroupListT
+      <$> liftM castPtr       ({#get rd_kafka_group_list->groups    #} p)
+      <*> liftM fromIntegral  ({#get rd_kafka_group_list->group_cnt #} p)
+  poke p x = do
+    {#set rd_kafka_group_list.groups    #} p (castPtr      $ groups'RdKafkaGroupListT x)
+    {#set rd_kafka_group_list.group_cnt #} p (fromIntegral $ groupCnt'RdKafkaGroupListT x)
+
+data RdKafkaGroupInfoT = RdKafkaGroupInfoT
+  { broker'RdKafkaGroupInfoT       :: Ptr RdKafkaMetadataBrokerT
+  , group'RdKafkaGroupInfoT        :: CString
+  , err'RdKafkaGroupInfoT          :: RdKafkaRespErrT
+  , state'RdKafkaGroupInfoT        :: CString
+  , protocolType'RdKafkaGroupInfoT :: CString
+  , protocol'RdKafkaGroupInfoT     :: CString
+  , members'RdKafkaGroupInfoT      :: Ptr RdKafkaGroupMemberInfoT
+  , memberCnt'RdKafkaGroupInfoT    :: Int }
+
+instance Storable RdKafkaGroupInfoT where
+  sizeOf    _ = {#sizeof  rd_kafka_group_info #}
+  alignment _ = {#alignof rd_kafka_group_info #}
+
+  peek p = RdKafkaGroupInfoT
+    <$> liftM castPtr                 ({#get rd_kafka_group_info->broker        #} p)
+    <*> liftM id                      ({#get rd_kafka_group_info->group         #} p)
+    <*> liftM (toEnum . fromIntegral) ({#get rd_kafka_group_info->err           #} p)
+    <*> liftM id                      ({#get rd_kafka_group_info->state         #} p)
+    <*> liftM id                      ({#get rd_kafka_group_info->protocol_type #} p)
+    <*> liftM id                      ({#get rd_kafka_group_info->protocol      #} p)
+    <*> liftM castPtr                 ({#get rd_kafka_group_info->members       #} p)
+    <*> liftM fromIntegral            ({#get rd_kafka_group_info->member_cnt    #} p)
+
+  poke p x = do
+    {#set rd_kafka_group_info.broker#}        p (castPtr                   $ broker'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.group#}         p (id                        $ group'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.err#}           p ((fromIntegral . fromEnum) $ err'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.state#}         p (id                        $ state'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.protocol_type#} p (id                        $ protocolType'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.protocol#}      p (id                        $ protocol'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.members#}       p (castPtr                   $ members'RdKafkaGroupInfoT x)
+    {#set rd_kafka_group_info.member_cnt#}    p (fromIntegral              $ memberCnt'RdKafkaGroupInfoT x)
+
+data RdKafkaGroupMemberInfoT = RdKafkaGroupMemberInfoT
+  { memberId'RdKafkaGroupMemberInfoT              :: CString
+  , clientId'RdKafkaGroupMemberInfoT              :: CString
+  , clientHost'RdKafkaGroupMemberInfoT            :: CString
+  , memberMetadata'RdKafkaGroupMemberInfoT        :: Ptr Word8
+  , memberMetadataSize'RdKafkaGroupMemberInfoT    :: Int
+  , memberAssignment'RdKafkaGroupMemberInfoT      :: Ptr Word8
+  , memberAssignmentSize'RdKafkaGroupMemberInfoT  :: Int
+  }
+
+instance Storable RdKafkaGroupMemberInfoT where
+  sizeOf    _ = {#sizeof  rd_kafka_group_member_info #}
+  alignment _ = {#alignof rd_kafka_group_member_info #}
+
+  peek p = RdKafkaGroupMemberInfoT
+    <$> liftM id            ({#get rd_kafka_group_member_info->member_id              #} p)
+    <*> liftM id            ({#get rd_kafka_group_member_info->client_id              #} p)
+    <*> liftM id            ({#get rd_kafka_group_member_info->client_host            #} p)
+    <*> liftM castPtr       ({#get rd_kafka_group_member_info->member_metadata        #} p)
+    <*> liftM fromIntegral  ({#get rd_kafka_group_member_info->member_metadata_size   #} p)
+    <*> liftM castPtr       ({#get rd_kafka_group_member_info->member_assignment      #} p)
+    <*> liftM fromIntegral  ({#get rd_kafka_group_member_info->member_assignment_size #} p)
+
+  poke p x = do
+    {#set rd_kafka_group_member_info.member_id              #} p (id           $ memberId'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.client_id              #} p (id           $ clientId'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.client_host            #} p (id           $ clientHost'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.member_metadata        #} p (castPtr      $ memberMetadata'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.member_metadata_size   #} p (fromIntegral $ memberMetadataSize'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.member_assignment      #} p (castPtr      $ memberAssignment'RdKafkaGroupMemberInfoT x)
+    {#set rd_kafka_group_member_info.member_assignment_size #} p (fromIntegral $ memberAssignmentSize'RdKafkaGroupMemberInfoT x)
 
 -- Errors
 data RdKafkaErrDesc = RdKafkaErrDesc

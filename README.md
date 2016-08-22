@@ -57,13 +57,6 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_topic_conf_set_opaque`
 - [X] `rd_kafka_topic_conf_get`
 
-### Partitioning
-- [X] `rd_kafka_topic_conf_set_partitioner_cb`
-- [X] `rd_kafka_topic_partition_available` (Must be called within partioning function)
-- [X] `rd_kafka_msg_partitioner_random`
-- [X] `rd_kafka_msg_partitioner_consistent`
-- [X] `rd_kafka_msg_partitioner_consistent_random`
-
 ### Logging
 - [X] `rd_kafka_set_log_level`
 
@@ -94,6 +87,16 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_new`
 - [X] `rd_kafka_destroy`
 - [X] `rd_kafka_name`
+- [X] `rd_kafka_opaque`
+- [X] `rd_kafka_poll`
+- [X] `rd_kafka_yield`
+- [X] `rd_kafka_pause_partitions`
+- [X] `rd_kafka_resume_partitions`
+- [X] `rd_kafka_query_watermark_offsets`
+- [X] `rd_kafka_get_watermark_offsets`
+- [X] `rd_kafka_list_groups`
+- [X] `rd_kafka_group_list_destroy`
+- [X] `rd_kafka_brokers_add`
 
 ## Message
 - [X] `rd_kafka_message_destroy`
@@ -105,25 +108,25 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_queue_destroy`
 
 ## Legacy consumer API
-- [ ] `rd_kafka_last_error`
+- [X] `rd_kafka_last_error`
 
 ### Errors
 - [ ] `rd_kafka_errno`
 - [ ] `rd_kafka_errno2err`
 
 ## Simple API
-- [ ] `rd_kafka_consume_start`
-- [ ] `rd_kafka_consume_start_queue`
-- [ ] `rd_kafka_consume_stop`
-- [ ] `rd_kafka_seek`
-- [ ] `rd_kafka_consume`
-- [ ] `rd_kafka_consume_batch`
-- [ ] `rd_kafka_consume_callback`
+- [X] `rd_kafka_consume_start`
+- [X] `rd_kafka_consume_start_queue`
+- [X] `rd_kafka_consume_stop`
+- [X] `rd_kafka_seek`
+- [X] `rd_kafka_consume`
+- [X] `rd_kafka_consume_batch`
+- [X] `rd_kafka_consume_callback`
 
 ### Queue
-- [ ] `rd_kafka_consume_queue`
-- [ ] `rd_kafka_consume_batch_queue`
-- [ ] `rd_kafka_consume_callback_queue`
+- [X] `rd_kafka_consume_queue`
+- [X] `rd_kafka_consume_batch_queue`
+- [X] `rd_kafka_consume_callback_queue`
 
 ### Topic/parition offset
 - [ ] `rd_kafka_offset_store`
@@ -140,14 +143,22 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_commit_message`
 - [X] `rd_kafka_committed`
 - [X] `rd_kafka_position`
+- [X] `rd_kafka_memberid`
 
 ## Metadata
 - [X] `rd_kafka_metadata`
 - [X] `rd_kafka_metadata_destroy`
 
 ## Producer API
-- [ ] `rd_kafka_produce`
-- [ ] `rd_kafka_produce_batch`
+- [X] `rd_kafka_produce`
+- [X] `rd_kafka_produce_batch`
+
+### Partitioning
+- [X] `rd_kafka_topic_conf_set_partitioner_cb`
+- [X] `rd_kafka_topic_partition_available` (Must be called within partioning function)
+- [X] `rd_kafka_msg_partitioner_random`
+- [X] `rd_kafka_msg_partitioner_consistent`
+- [X] `rd_kafka_msg_partitioner_consistent_random`
 
 ## Deprecated
 - [ ] `rd_kafka_set_logger`
@@ -155,18 +166,8 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [ ] `rd_kafka_log_syslog`
 
 ## Unsorted
-- [ ] `rd_kafka_memberid`
-- [ ] `rd_kafka_opaque`
-- [ ] `rd_kafka_poll`
-- [ ] `rd_kafka_yield`
-- [ ] `rd_kafka_pause_partitions`
-- [ ] `rd_kafka_resume_partitions`
-- [ ] `rd_kafka_query_watermark_offsets`
-- [ ] `rd_kafka_get_watermark_offsets`
 - [ ] `rd_kafka_mem_free`
-- [ ] `rd_kafka_list_groups`
-- [ ] `rd_kafka_group_list_destroy`
-- [ ] `rd_kafka_brokers_add`
+
 - [ ] `rd_kafka_outq_len`
 - [ ] `rd_kafka_dump`
 - [ ] `rd_kafka_thread_cnt`

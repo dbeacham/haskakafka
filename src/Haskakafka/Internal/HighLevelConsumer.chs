@@ -13,6 +13,7 @@ module Haskakafka.Internal.HighLevelConsumer
   , rdKafkaCommitMessage
   , rdKafkaCommitted
   , rdKafkaPosition
+  , rdKafkaMemberid
   ) where
 
 import Foreign (Ptr)
@@ -145,3 +146,9 @@ import Foreign (Ptr)
   { `RdKafkaTPtr'
   , `RdKafkaTopicPartitionListTPtr'
   } -> `RdKafkaRespErrT' #}
+
+-- | 
+{#fun rd_kafka_memberid
+  as ^
+  { `RdKafkaTPtr'
+  } -> `String' #}
