@@ -6,9 +6,9 @@ module Haskakafka.Internal.Configuration
   , RdKafkaConfTPtr
 
   -- ** Lifetime
-  , rdKafkaConfNew
-  , rdKafkaConfDup
-  , rdKafkaConfDestroy
+  , rd_kafka_conf_new
+  , rd_kafka_conf_dup
+  , rd_kafka_conf_destroy
 
   -- ** Getters and setters
   , rdKafkaConfSet
@@ -124,19 +124,17 @@ import System.Posix.Types (CMode(..))
 
 -- | Create a new configuration object with defaults set.
 {#fun unsafe rd_kafka_conf_new
-  as ^
-  {} -> `RdKafkaConfTPtr' #}
+  {} -> `Ptr RdKafkaConfT' id #}
 
 -- | Duplicate a copy of a configuration object.
 {#fun unsafe rd_kafka_conf_dup
-  as ^
-  { `RdKafkaConfTPtr'
+  { id `Ptr RdKafkaConfT'
   -- ^ pointer to existing configuration object
-  } -> `RdKafkaConfTPtr' #}
+  } -> `Ptr RdKafkaConfT' id #}
 
 -- | Destroy a configuration object.
 foreign import ccall unsafe "rdkafka.h &rd_kafka_conf_destroy"
-  rdKafkaConfDestroy :: FunPtr (Ptr RdKafkaConfT -> IO ())
+  rd_kafka_conf_destroy :: FunPtr (Ptr RdKafkaConfT -> IO ())
 
 --------------------------------------------------------------------------------
 -- ** Getters and setters
@@ -145,7 +143,7 @@ foreign import ccall unsafe "rdkafka.h &rd_kafka_conf_destroy"
 -- | Set a configuration value.
 {#fun unsafe rd_kafka_conf_set
   as ^
-  { `RdKafkaConfTPtr'
+  { id `Ptr RdKafkaConfT'
   -- ^ pointer to configuration object
   , `String'
   -- ^ configuration name

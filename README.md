@@ -14,7 +14,7 @@ Original [README](README.orig.md).
 - [X] `rd_kafka_version`
 - [X] `rd_kafka_version_str`
 
-## Errors
+## Error conversion
 Depends: @RdKafkaRespErrT@
 
 - [X] `rd_kafka_get_err_descs`
@@ -72,7 +72,7 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_topic_name`
 - [X] `rd_kafka_topic_opaque`
 
-## Topic partition
+## Topic partition list
 - [X] `rd_kafka_topic_partition_list_new`
 - [X] `rd_kafka_topic_partition_list_destroy`
 - [X] `rd_kafka_topic_partition_list_add`
@@ -97,6 +97,11 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 - [X] `rd_kafka_list_groups`
 - [X] `rd_kafka_group_list_destroy`
 - [X] `rd_kafka_brokers_add`
+- [X] `rd_kafka_outq_len`
+- [X] `rd_kafka_dump`
+- [X] `rd_kafka_thread_cnt`
+- [X] `rd_kafka_wait_destroyed`
+- [X] `rd_kafka_poll_set_consumer`
 
 ## Message
 - [X] `rd_kafka_message_destroy`
@@ -168,8 +173,3 @@ Depends: @RdKafkaConfT@, @RdKafkaTopicConfT@, @RdKafkaConfResT@
 ## Unsorted
 - [ ] `rd_kafka_mem_free`
 
-- [ ] `rd_kafka_outq_len`
-- [ ] `rd_kafka_dump`
-- [ ] `rd_kafka_thread_cnt`
-- [ ] `rd_kafka_wait_destroyed`
-- [ ] `rd_kafka_poll_set_consumer`
