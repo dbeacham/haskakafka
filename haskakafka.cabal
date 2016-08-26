@@ -26,7 +26,7 @@ library
                      , unix
   exposed-modules:
     --Haskakafka
-    Haskakafka.Internal.Examples
+    --Haskakafka.Internal.Examples
     Haskakafka.Internal.CTypes
     Haskakafka.Internal.Version
     Haskakafka.Internal.Configuration
@@ -42,6 +42,7 @@ library
     Haskakafka.Internal.SimpleError
     Haskakafka.Internal.SimpleConsumer
     Haskakafka.Internal.Test
+    Haskakafka.Internal.ConfigurationAPI
     --Haskakafka.InternalRdKafkaEnum
     --Haskakafka.InternalRdKafka
     --Haskakafka.InternalSetup

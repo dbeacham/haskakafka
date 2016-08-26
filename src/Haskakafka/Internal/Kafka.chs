@@ -26,6 +26,11 @@ module Haskakafka.Internal.Kafka
   
   -- * Misc
   , rdKafkaBrokersAdd
+  , rdKafkaOutqLen
+  , rdKafkaDump
+  , rdKafkaThreadCnt
+  , rdKafkaWaitDestroyed
+  , rdKafkaPollSetConsumer
   ) where
 
 import Foreign (Ptr, FunPtr, castPtr)
